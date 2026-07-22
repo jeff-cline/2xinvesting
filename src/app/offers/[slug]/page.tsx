@@ -19,7 +19,7 @@ export default async function OfferPage({ params }: { params: Promise<{ slug: st
       <main>
         <div className="wrap page-head">
           <Link className="back" href="/#offerings">← All offerings</Link>
-          <div className="detail-hero fade d1" style={offer.featuredImage ? { backgroundImage: `linear-gradient(120deg, rgba(10,15,12,.58), rgba(10,15,12,.28)), url(${offer.featuredImage})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: "linear-gradient(150deg,#153a2c,#0c1d16 55%,#1a140b)" }}>
+          <div className="detail-hero fade d1" style={offer.featuredImage ? { backgroundImage: `linear-gradient(120deg, rgba(10,15,12,.50), rgba(10,15,12,.20)), url(${offer.featuredImage})`, backgroundSize: "cover", backgroundPosition: "center" } : { background: "linear-gradient(150deg,#153a2c,#0c1d16 55%,#1a140b)" }}>
             <span className="oglyph">{offer.iconGlyph}</span>
             <div style={{ position: "relative", zIndex: 2 }}>
               <span className="eyebrow">{offer.category}</span>
