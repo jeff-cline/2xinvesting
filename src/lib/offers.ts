@@ -53,12 +53,12 @@ function toOffer(r: Record<string, unknown>): Offer {
     id: String(r.id), slug: String(r.slug), title: String(r.title), category: String(r.category),
     blurb: String(r.blurb), description: String(r.description), iconGlyph: String(r.iconGlyph),
     coverClass: String(r.coverClass), featuredImage: String(r.featuredImage),
-    gallery: safeArr(r.gallery), pdfs: safeArr(r.pdfs) as OfferPdf[],
+    gallery: safeArr(r.gallery) as string[], pdfs: safeArr(r.pdfs) as OfferPdf[],
     isSample: Boolean(r.isSample), priority: Number(r.priority),
     impressions: Number(r.impressions), clicks: Number(r.clicks),
   };
 }
-function safeArr(s: unknown): string[] { try { const v = JSON.parse(String(s || "[]")); return Array.isArray(v) ? v : []; } catch { return []; } }
+function safeArr(s: unknown): unknown[] { try { const v = JSON.parse(String(s || "[]")); return Array.isArray(v) ? v : []; } catch { return []; } }
 
 // Rank: God priority first, then momentum (clicks+impressions), then recency.
 // Real (non-sample) offers always outrank samples so samples retire as inventory grows.
