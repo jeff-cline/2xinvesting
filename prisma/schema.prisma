@@ -25,6 +25,7 @@ model InvestOffer {
   isSample      Boolean  @default(false)
   priority      Int      @default(0)
   trending      Boolean  @default(false)
+  pocket        Boolean  @default(false)
   impressions   Int      @default(0)
   clicks        Int      @default(0)
   status        String   @default("live")
@@ -44,6 +45,8 @@ model InvestLead {
   interests String   @default("[]")
   offerId   String?
   source    String   @default("intake")
+  kind      String   @default("investor")
+  sourcePage String  @default("")
   createdAt DateTime @default(now())
   @@index([createdAt])
   @@map("invest_lead")

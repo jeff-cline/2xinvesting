@@ -26,7 +26,7 @@ function OfferCard({ o, trending }: { o: Offer; trending?: boolean }) {
 }
 
 export default async function Home() {
-  const { featured, alsoView, trending } = await getHomeOffers();
+  const { featured, alsoView, trending, pocket } = await getHomeOffers();
   return (
     <>
       <Header />
@@ -122,13 +122,52 @@ export default async function Home() {
           </div>
         </section>
 
+        {pocket.length > 0 && (
+          <section className="band" id="pocket">
+            <div className="wrap">
+              <div className="sec-head">
+                <div><span className="eyebrow">Members Only · At a Discount</span><h2>Pocket Offerings</h2></div>
+                <span className="crm-sub" style={{ maxWidth: "34ch", textAlign: "right" }}>Premium strategies unlocked for 2X members.</span>
+              </div>
+              <div className="pockets">
+                {pocket.map((o) => (
+                  <div className="pocket-row fade d1" key={o.slug}>
+                    <div className="pocket-cover" style={o.featuredImage ? { backgroundImage: `linear-gradient(120deg, rgba(10,15,12,.34), rgba(10,15,12,.62)), url(${o.featuredImage})` } : undefined}>
+                      <span className="oglyph">{o.iconGlyph}</span>
+                    </div>
+                    <div className="pocket-body">
+                      <span className="member-badge">Member Benefit · Discounted</span>
+                      <h3>{o.title}</h3>
+                      <p>{o.description}</p>
+                      <Link className="btn solid" href={`/invest?offer=${o.slug}&kind=pocket`}>Request as a Member</Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Need a Geek ad */}
+        <section className="band">
+          <div className="wrap">
+            <div className="geek-ad fade d1">
+              <div>
+                <span className="eyebrow" style={{ color: "#e6cf96" }}>An Aside</span>
+                <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", marginTop: 10 }}>Need a Geek?</h2>
+                <p style={{ color: "var(--muted)", margin: "14px 0 0", maxWidth: "48ch" }}>The Airbnb industry is about to be <em style={{ color: "var(--gold-soft)", fontStyle: "italic" }}>uberized</em>. If you want in early, contact Jeff Cline.</p>
+              </div>
+              <Link className="btn solid" href="/geek" style={{ padding: "15px 26px" }}>Contact Jeff Cline</Link>
+            </div>
+          </div>
+        </section>
+
         <section className="band" id="sponsor">
           <div className="wrap">
             <div className="sec-head">
               <div><span className="eyebrow">For Sponsors</span><h2>List your offering to a qualified audience</h2></div>
-              <Link className="btn" href="/sponsor">Become a Sponsor</Link>
+              <Link className="btn solid" href="/sponsor">Become a Sponsor</Link>
             </div>
-            <p style={{ color: "var(--muted)", maxWidth: "60ch", fontSize: 15 }}>Bring your deal to a private audience of accredited investors. Publish a landing page — featured film, portfolio gallery, downloadable pitch deck, executive summary, PPM — then track impressions, high-intent matches, and expressed interest from your own dashboard, with your CRM synced to Zoho, GoHighLevel, or Salesforce.</p>
           </div>
         </section>
       </main>

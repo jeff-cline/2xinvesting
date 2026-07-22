@@ -11,11 +11,15 @@ const schema = z.object({
   phone: z.string().min(3),
   email: z.string().email(),
   business: z.string().optional().default(""),
-  role: z.enum(["accredited", "fund_manager", "jv", "private"]).default("accredited"),
+  role: z.enum(["accredited", "fund_manager", "jv", "private"]).optional().default("accredited"),
   offer: z.string().optional(),
+  kind: z.enum(["investor", "pocket", "geek"]).optional().default("investor"),
+  sourcePage: z.string().optional().default(""),
+  message: z.string().optional().default(""),
 });
 
 const ROLE_LABEL: Record<string, string> = { accredited: "Accredited Investor", fund_manager: "Fund Manager", jv: "Joint Venture", private: "Private Investor" };
+const KIND_SUBJECT: Record<string, string> = { investor: "New 2X Investor signup", pocket: "New 2X Pocket Offering request", geek: "New 'Need a Geek' inquiry" };
 
 export async function POST(req: NextRequest) {
   const parsed = schema.safeParse(await req.json().catch(() => ({})));
@@ -28,17 +32,20 @@ export async function POST(req: NextRequest) {
     const o = await db.investOffer.findUnique({ where: { slug: d.offer } }).catch(() => null);
     if (o) { offerId = o.id; offerTitle = o.title; db.investOffer.update({ where: { id: o.id }, data: { clicks: { increment: 1 } } }).catch(() => {}); }
   }
+  const interests = d.message ? [d.message] : d.offer ? [d.offer] : [];
 
   await db.investLead.create({
-    data: { name: d.name, phone: d.phone, email: d.email, business: d.business, role: d.role, offerId: offerId || null, interests: d.offer ? JSON.stringify([d.offer]) : "[]", source: "intake" },
+    data: { name: d.name, phone: d.phone, email: d.email, business: d.business, role: d.role, kind: d.kind, sourcePage: d.sourcePage, offerId: offerId || null, interests: JSON.stringify(interests), source: d.kind },
   }).catch(() => {});
 
-  await notifyFounder("New 2X Investor signup", [
-    `<b>${d.name}</b> — ${ROLE_LABEL[d.role]}`,
+  await notifyFounder(KIND_SUBJECT[d.kind] || KIND_SUBJECT.investor, [
+    `<b>${d.name}</b>${d.kind === "investor" ? ` — ${ROLE_LABEL[d.role]}` : ""}`,
     `Phone: ${d.phone}`,
     `Email: ${d.email}`,
     d.business ? `Business: ${d.business}` : "",
-    offerTitle ? `Interested in: <b>${offerTitle}</b>` : "Interested in: (browsing)",
+    offerTitle ? `Interested in: <b>${offerTitle}</b>` : "",
+    d.message ? `Message: ${d.message}` : "",
+    d.sourcePage ? `Signed up on: ${d.sourcePage}` : "",
   ].filter(Boolean));
 
   return NextResponse.json({ ok: true });

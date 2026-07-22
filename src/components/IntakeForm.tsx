@@ -8,7 +8,7 @@ const ROLES = [
   { v: "private", label: "Private Investor" },
 ];
 
-export default function IntakeForm({ offer }: { offer?: string }) {
+export default function IntakeForm({ offer, kind }: { offer?: string; kind?: string }) {
   const [f, setF] = useState({ name: "", phone: "", email: "", business: "", role: "accredited" });
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
@@ -18,7 +18,8 @@ export default function IntakeForm({ offer }: { offer?: string }) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true); setErr("");
-    const r = await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...f, offer }) }).then((x) => x.json()).catch(() => null);
+    const sourcePage = (typeof document !== "undefined" && document.referrer ? new URL(document.referrer).pathname : "/invest") + (offer ? ` (${offer})` : "");
+    const r = await fetch("/api/leads", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...f, offer, kind: kind === "pocket" ? "pocket" : "investor", sourcePage }) }).then((x) => x.json()).catch(() => null);
     setBusy(false);
     if (r?.ok) setDone(true); else setErr(r?.error || "Something went wrong. Please try again.");
   }
