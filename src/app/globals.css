@@ -198,3 +198,22 @@ footer p.mission{color:var(--muted);font-size:13.5px;max-width:40ch;margin:16px 
 .cc-chip{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ivory);border:1px solid var(--line);padding:6px 10px;border-radius:2px}
 .cc-chip button{background:none;border:0;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0}
 .cc-chip button:hover{color:#e08a8a}
+
+/* Discovery Tour — powerful lander */
+.dt-incl{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:820px){.dt-incl{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.dt-incl{grid-template-columns:1fr}}
+.dt-card{border:1px solid var(--line-soft);border-radius:6px;overflow:hidden;background:var(--card);transition:transform .3s,border-color .3s}
+.dt-card:hover{transform:translateY(-4px);border-color:var(--teal)}
+.dt-card-img{height:180px;background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:16px}
+.dt-card-img h4{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--ivory);margin:0}
+.dt-card p{color:var(--muted);font-size:13.5px;margin:0;padding:16px 18px 20px}
+.dt-highlight{margin-top:22px;border:1px solid var(--teal);border-radius:6px;padding:32px 36px;background:radial-gradient(120% 160% at 100% 0%,rgba(20,184,166,.16),transparent 55%),var(--ground-2)}
+.dt-highlight h3{color:var(--ivory)}
+.dt-opps{position:relative;z-index:2;background-size:cover;background-position:center;background-attachment:fixed}
+.opp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:820px){.opp-grid{grid-template-columns:1fr 1fr}}
+.opp-chip{display:flex;align-items:center;gap:10px;border:1px solid var(--line-soft);border-radius:4px;padding:16px 18px;background:rgba(18,27,22,.7);font-size:15px;color:var(--ivory);transition:.2s}
+.opp-chip:hover{border-color:var(--teal);background:rgba(20,184,166,.08)}
+.opp-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.opp-chip.more{color:var(--teal-soft);font-style:italic;justify-content:center}
