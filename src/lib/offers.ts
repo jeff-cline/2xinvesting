@@ -9,7 +9,7 @@ export type Offer = {
 };
 
 // The 9 seed offers — real content, flagged isSample so they retire as sponsors arrive.
-export const SEED_OFFERS: Array<Omit<Offer, "id" | "gallery" | "pdfs" | "impressions" | "clicks"> & { gallery: string[]; pdfs: OfferPdf[] }> = [
+export const SEED_OFFERS: Array<Omit<Offer, "id" | "gallery" | "pdfs" | "impressions" | "clicks" | "trending"> & { gallery: string[]; pdfs: OfferPdf[] }> = [
   { slug: "islay-reserve", title: "The Islay Reserve Allocation", category: "Whisky", coverClass: "c7", iconGlyph: "❦", priority: 90, isSample: true,
     blurb: "A closed allocation of maturing single-malt casks — held in bond, insured, exit-planned.",
     description: "A closed allocation of maturing single-malt casks from a family distillery, held in bond, fully insured, and exit-planned across a seven-year horizon. Tangible, appreciating, and pouring — an asset you can visit, gift, and eventually drink.",
