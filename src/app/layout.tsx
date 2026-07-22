@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import TrackBeacon from "@/components/TrackBeacon";
 
 export const metadata: Metadata = {
   title: "2X Investing — Lifestyle Investing, By Invitation",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><TrackBeacon />{children}</body>
     </html>
   );
 }

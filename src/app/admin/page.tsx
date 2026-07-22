@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import AdminLogin from "@/components/AdminLogin";
 import AdminReset from "@/components/AdminReset";
 import LogoutButton from "@/components/LogoutButton";
+import CcManager from "@/components/CcManager";
 
 export const dynamic = "force-dynamic";
 
@@ -19,11 +20,15 @@ export default async function AdminPage() {
   const god = await getGod();
   if (god.mustReset) return <Shell><AdminReset /></Shell>;
 
-  const [leads, sponsors, offers] = await Promise.all([
+  const [leads, sponsors, offers, pageviews, visitorGroups, topPages] = await Promise.all([
     db.investLead.findMany({ orderBy: { createdAt: "desc" }, take: 500 }),
     db.investSponsor.findMany({ orderBy: { createdAt: "desc" }, take: 500 }),
     db.investOffer.findMany({ orderBy: { clicks: "desc" } }),
+    db.investEvent.count({ where: { type: "pageview" } }),
+    db.investEvent.groupBy({ by: ["visitorId"] }).catch(() => [] as { visitorId: string }[]),
+    db.investEvent.groupBy({ by: ["page"], where: { type: "pageview" }, _count: { page: true }, orderBy: { _count: { page: "desc" } }, take: 8 }).catch(() => [] as { page: string; _count: { page: number } }[]),
   ]);
+  const uniqueVisitors = visitorGroups.length;
   const offerName = new Map(offers.map((o) => [o.id, o.title]));
   const impressions = offers.reduce((a, o) => a + o.impressions, 0);
   const clicks = offers.reduce((a, o) => a + o.clicks, 0); // high-intent engagements
@@ -69,6 +74,30 @@ export default async function AdminPage() {
             </div>
           </section>
         )}
+
+        {/* Visitor click-path activity */}
+        <section style={{ marginTop: 40 }}>
+          <div className="crm-head"><span className="pill inv">Visitor Activity</span><span className="crm-sub">How people click around the site</span></div>
+          <div className="crm-kpis" style={{ gridTemplateColumns: "repeat(2,1fr)", marginTop: 0, marginBottom: 16 }}>
+            <div className="crm-kpi"><div className="n">{uniqueVisitors.toLocaleString()}</div><div className="l">Unique Visitors</div></div>
+            <div className="crm-kpi"><div className="n">{pageviews.toLocaleString()}</div><div className="l">Pageviews</div></div>
+          </div>
+          <div className="crm-table-wrap">
+            <table className="crm-table">
+              <thead><tr><th>Page</th><th>Views</th></tr></thead>
+              <tbody>
+                {topPages.map((p) => (<tr key={p.page}><td><b>{p.page || "/"}</b></td><td><span className="tag-role">{p._count.page}</span></td></tr>))}
+                {topPages.length === 0 && <tr><td colSpan={2} className="empty">No visits tracked yet.</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Discovery Tour CC list */}
+        <section style={{ marginTop: 40 }}>
+          <div className="crm-head"><span className="pill spo" style={{ background: "rgba(20,184,166,.18)", color: "var(--teal-soft)", borderColor: "rgba(20,184,166,.4)" }}>Discovery Tour CC</span><span className="crm-sub">Who gets copied on tour requests</span></div>
+          <CcManager />
+        </section>
 
         <section style={{ marginTop: 40 }}>
           <div className="crm-head"><span className="pill inv">Investor & Interest Leads</span><span className="crm-sub">Everyone who registered or requested — and where</span></div>

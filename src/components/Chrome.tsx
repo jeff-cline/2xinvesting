@@ -14,7 +14,7 @@ export function Header() {
           <li><Link href="/invest">For Investors</Link></li>
           <li><Link href="/sponsor">For Sponsors</Link></li>
         </ul>
-        <Link className="btn" href="/invest">Request Access</Link>
+        <Link className="btn-teal" href="/investor-discovery-tour">Free Discovery Tour →</Link>
       </div>
     </header>
   );

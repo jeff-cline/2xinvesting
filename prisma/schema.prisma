@@ -66,6 +66,19 @@ model InvestSponsor {
   @@map("invest_sponsor")
 }
 
+model InvestEvent {
+  id        String   @id @default(cuid())
+  visitorId String   @default("")
+  type      String   @default("pageview")
+  page      String   @default("")
+  offerSlug String   @default("")
+  meta      String   @default("")
+  createdAt DateTime @default(now())
+  @@index([visitorId, createdAt])
+  @@index([type, createdAt])
+  @@map("invest_event")
+}
+
 // Read-only view of Core's shared Integration table (Zapmail/Klaviyo creds).
 model Integration {
   key    String @id
