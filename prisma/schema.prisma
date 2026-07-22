@@ -24,6 +24,7 @@ model InvestOffer {
   sponsorId     String?
   isSample      Boolean  @default(false)
   priority      Int      @default(0)
+  trending      Boolean  @default(false)
   impressions   Int      @default(0)
   clicks        Int      @default(0)
   status        String   @default("live")
