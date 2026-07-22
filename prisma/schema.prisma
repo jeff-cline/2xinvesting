@@ -1,0 +1,70 @@
+// 2xinvesting.com — generate-only client against the SHARED medigap Postgres.
+// Core owns migrations (db push runs from Core). This app only reads/writes these tables.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model InvestOffer {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  category      String   @default("")
+  blurb         String   @default("")
+  description   String   @default("")
+  iconGlyph     String   @default("")
+  coverClass    String   @default("c1")
+  featuredImage String   @default("")
+  gallery       String   @default("[]")
+  pdfs          String   @default("[]")
+  sponsorId     String?
+  isSample      Boolean  @default(false)
+  priority      Int      @default(0)
+  impressions   Int      @default(0)
+  clicks        Int      @default(0)
+  status        String   @default("live")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  @@index([status, priority])
+  @@map("invest_offer")
+}
+
+model InvestLead {
+  id        String   @id @default(cuid())
+  name      String   @default("")
+  phone     String   @default("")
+  email     String   @default("")
+  business  String   @default("")
+  role      String   @default("")
+  interests String   @default("[]")
+  offerId   String?
+  source    String   @default("intake")
+  createdAt DateTime @default(now())
+  @@index([createdAt])
+  @@map("invest_lead")
+}
+
+model InvestSponsor {
+  id           String   @id @default(cuid())
+  name         String   @default("")
+  email        String   @unique
+  phone        String   @default("")
+  business     String   @default("")
+  offerPitch   String   @default("")
+  passwordHash String   @default("")
+  mustReset    Boolean  @default(true)
+  status       String   @default("pending")
+  createdAt    DateTime @default(now())
+  @@map("invest_sponsor")
+}
+
+// Read-only view of Core's shared Integration table (Zapmail/Klaviyo creds).
+model Integration {
+  key    String @id
+  config String @default("{}")
+  @@map("Integration")
+}
