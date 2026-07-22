@@ -68,3 +68,10 @@ model Integration {
   config String @default("{}")
   @@map("Integration")
 }
+
+// Core's shared Setting table (stores the God account + config).
+model Setting {
+  key   String @id
+  value String @default("")
+  @@map("Setting")
+}
