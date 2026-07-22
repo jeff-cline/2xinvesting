@@ -47,6 +47,7 @@ model InvestLead {
   source    String   @default("intake")
   kind      String   @default("investor")
   sourcePage String  @default("")
+  sponsorNote String @default("")
   createdAt DateTime @default(now())
   @@index([createdAt])
   @@map("invest_lead")
@@ -62,6 +63,10 @@ model InvestSponsor {
   passwordHash String   @default("")
   mustReset    Boolean  @default(true)
   status       String   @default("pending")
+  crmType      String   @default("")
+  crmApiKey    String   @default("")
+  crmEndpoint  String   @default("")
+  crmConnected Boolean  @default(false)
   createdAt    DateTime @default(now())
   @@map("invest_sponsor")
 }

@@ -19,6 +19,16 @@ export async function getDiscoveryTourCc(): Promise<string[]> {
   try { const arr = row ? JSON.parse(row.value) : []; return Array.isArray(arr) ? arr.filter((x) => typeof x === "string") : []; } catch { return []; }
 }
 
+// Send a direct email to a specific recipient (e.g., a sponsor's login details). Never throws.
+export async function sendTo(to: string, subject: string, html: string) {
+  try {
+    const mb = await firstMailbox();
+    if (!mb) { console.log("[sendTo] no mailbox for", to, subject); return; }
+    const t = nodemailer.createTransport({ host: mb.smtpHost, port: mb.smtpPort || 587, secure: mb.smtpPort === 465, auth: { user: mb.smtpUser, pass: mb.smtpPass } });
+    await t.sendMail({ from: mb.smtpUser, to, subject, html });
+  } catch (e) { console.log("[sendTo] failed:", e instanceof Error ? e.message : "unknown"); }
+}
+
 // Email jeff.cline@me.com directly. Optionally CC others. Never throws.
 export async function notifyFounder(subject: string, lines: string[], cc: string[] = []) {
   try {

@@ -4,6 +4,7 @@ import AdminLogin from "@/components/AdminLogin";
 import AdminReset from "@/components/AdminReset";
 import LogoutButton from "@/components/LogoutButton";
 import CcManager from "@/components/CcManager";
+import SponsorAdminActions from "@/components/SponsorAdminActions";
 
 export const dynamic = "force-dynamic";
 
@@ -127,20 +128,19 @@ export default async function AdminPage() {
           <div className="crm-head"><span className="pill spo">Sponsors</span><span className="crm-sub">Applied to list an offering</span></div>
           <div className="crm-table-wrap">
             <table className="crm-table">
-              <thead><tr><th>When</th><th>Name</th><th>Business</th><th>Phone</th><th>Email</th><th>Status</th><th>Offering</th></tr></thead>
+              <thead><tr><th>When</th><th>Name</th><th>Business</th><th>Email</th><th>Status</th><th>Manage</th></tr></thead>
               <tbody>
                 {sponsors.map((r) => (
                   <tr key={r.id}>
                     <td className="dim">{fmt(r.createdAt)}</td>
                     <td><b>{r.name || "—"}</b></td>
                     <td>{r.business || "—"}</td>
-                    <td>{r.phone || "—"}</td>
                     <td>{r.email || "—"}</td>
                     <td><span className="tag-status">{r.status}</span></td>
-                    <td className="dim">{r.offerPitch ? r.offerPitch.slice(0, 50) + (r.offerPitch.length > 50 ? "…" : "") : "—"}</td>
+                    <td><SponsorAdminActions sponsorId={r.id} status={r.status} offers={offers.map((o) => ({ slug: o.slug, title: o.title }))} /></td>
                   </tr>
                 ))}
-                {sponsors.length === 0 && <tr><td colSpan={7} className="empty">No sponsor applications yet.</td></tr>}
+                {sponsors.length === 0 && <tr><td colSpan={6} className="empty">No sponsor applications yet.</td></tr>}
               </tbody>
             </table>
           </div>

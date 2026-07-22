@@ -40,6 +40,7 @@ export function Footer() {
             <Link href="/#featured">Featured</Link>
             <Link href="/invest">For Investors</Link>
             <Link href="/sponsor">For Sponsors</Link>
+            <Link href="/sponsor/login">Sponsor Login</Link>
           </div>
         </div>
         <div className="legal">

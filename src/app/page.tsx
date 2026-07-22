@@ -155,7 +155,7 @@ export default async function Home() {
               <div>
                 <span className="eyebrow" style={{ color: "#e6cf96" }}>An Aside</span>
                 <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", marginTop: 10 }}>Need a Geek?</h2>
-                <p style={{ color: "var(--muted)", margin: "14px 0 0", maxWidth: "48ch" }}>Every industry is a <em style={{ color: "var(--gold-soft)", fontStyle: "italic" }}>byway</em> from being Uberized. If you want in early, contact Jeff Cline.</p>
+                <p style={{ color: "var(--muted)", margin: "14px 0 0", maxWidth: "48ch" }}>Every industry is a <em style={{ color: "var(--gold-soft)", fontStyle: "italic" }}>geek</em> way from being Uber‑ized.</p>
               </div>
               <Link className="btn solid" href="/geek" style={{ padding: "15px 26px" }}>Contact Jeff Cline</Link>
             </div>
