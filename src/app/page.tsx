@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 function OfferCard({ o, trending }: { o: Offer; trending?: boolean }) {
   return (
     <Link className="card fade d1" href={`/offers/${o.slug}`}>
-      <div className={`cov ${o.coverClass}`} style={o.featuredImage ? { backgroundImage: `url(${o.featuredImage})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}>
+      <div className={`cov ${o.featuredImage ? "has-img" : o.coverClass}`} style={o.featuredImage ? { backgroundImage: `linear-gradient(155deg, rgba(10,15,12,.26), rgba(10,15,12,.64)), url(${o.featuredImage})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}>
         {trending && (
           <span className="trend">
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth={2}><path d="M3 17l6-6 4 4 8-8" /></svg>Trending
@@ -58,7 +58,7 @@ export default async function Home() {
                 <Link className="more" href="/#offerings">View all offerings →</Link>
               </div>
               <div className="feature fade d1">
-                <div className={`cover`} style={featured.featuredImage ? { backgroundImage: `url(${featured.featuredImage})`, backgroundSize: "cover" } : undefined}>
+                <div className="cover" style={featured.featuredImage ? { backgroundImage: `linear-gradient(150deg, rgba(10,15,12,.30), rgba(10,15,12,.60)), url(${featured.featuredImage})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}>
                   <span className="pin">Featured</span>
                   {!featured.featuredImage && <span className="oglyph">{featured.iconGlyph}</span>}
                 </div>
