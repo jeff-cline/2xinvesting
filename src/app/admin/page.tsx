@@ -5,6 +5,7 @@ import AdminReset from "@/components/AdminReset";
 import LogoutButton from "@/components/LogoutButton";
 import CcManager from "@/components/CcManager";
 import SponsorAdminActions from "@/components/SponsorAdminActions";
+import KlaviyoPanel from "@/components/KlaviyoPanel";
 
 export const dynamic = "force-dynamic";
 
@@ -92,6 +93,12 @@ export default async function AdminPage() {
               </tbody>
             </table>
           </div>
+        </section>
+
+        {/* Klaviyo integration */}
+        <section style={{ marginTop: 40 }}>
+          <div className="crm-head"><span className="pill spo" style={{ background: "rgba(20,184,166,.18)", color: "var(--teal-soft)", borderColor: "rgba(20,184,166,.4)" }}>Klaviyo</span><span className="crm-sub">Smart member emails — opt-in on membership</span></div>
+          <KlaviyoPanel />
         </section>
 
         {/* Discovery Tour CC list */}

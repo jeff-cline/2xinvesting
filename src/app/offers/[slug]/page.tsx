@@ -59,7 +59,7 @@ export default async function OfferPage({ params }: { params: Promise<{ slug: st
                   {member ? (
                     <div className="docs" style={{ flexDirection: "column" }}>
                       {offer.pdfs.map((p) => (
-                        <a className="doc" key={p.label} href={p.url}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M14 3v5h5M7 3h8l5 5v13H7z" /></svg>{p.label}</a>
+                        <a className="doc" key={p.label} href={`/api/download?offer=${offer.slug}&doc=${encodeURIComponent(p.label)}`}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M14 3v5h5M7 3h8l5 5v13H7z" /></svg>{p.label}</a>
                       ))}
                     </div>
                   ) : (

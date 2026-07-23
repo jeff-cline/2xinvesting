@@ -1,0 +1,23 @@
+<!-- Klaviyo Flow 2: INTEREST FOLLOW-UP. Trigger: metric "2X Interest" where kind = member-interest OR download.
+     Use the event property {{ event.interest }} to personalize which opportunity they looked at. -->
+<div style="margin:0;padding:0;background:#0a0f0c;">
+  <div style="display:none;max-height:0;overflow:hidden;">More on {{ event.interest|default:'the opportunity you viewed' }}.</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0a0f0c;">
+    <tr><td align="center" style="padding:32px 16px;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#0e1512;border:1px solid rgba(201,162,75,.2);border-radius:8px;">
+        <tr><td style="padding:30px 40px 6px;font-family:Georgia,serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#c9a24b;">You were looking at</td></tr>
+        <tr><td style="padding:2px 40px 0;font-family:Georgia,serif;font-size:28px;line-height:1.15;color:#ece7da;">{{ event.interest|default:'A 2X opportunity' }}</td></tr>
+        <tr><td style="padding:12px 40px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#8b9a8f;">
+          Want the full picture? The deck, executive summary, and PPM are ready in your members area — and we can connect you directly with the principals. Just say the word.
+        </td></tr>
+        <tr><td style="padding:24px 40px 6px;">
+          <a href="https://2xinvesting.com/member" style="display:inline-block;background:#14b8a6;color:#04140f;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:13px 24px;border-radius:3px;">Open the documents →</a>
+          <a href="https://2xinvesting.com/investor-discovery-tour" style="display:inline-block;color:#e6cf96;font-family:Arial,sans-serif;font-size:13px;text-decoration:none;padding:13px 14px;">★ Free Discovery Tour</a>
+        </td></tr>
+        <tr><td style="padding:24px 40px 30px;font-family:Arial,sans-serif;font-size:12px;color:#5b6b80;border-top:1px solid rgba(236,231,218,.08);">
+          2X Investing<br><a href="{% unsubscribe %}" style="color:#8b9a8f;">Unsubscribe</a>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</div>

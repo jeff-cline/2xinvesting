@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { notifyFounder, sendTo } from "@/lib/notify";
+import { pushLeadToKlaviyo } from "@/lib/klaviyo";
 
 const ROLE: Record<string, string> = { accredited: "Accredited Investor", fund_manager: "Fund Manager", jv: "Joint Venture", private: "Private Investor" };
 
@@ -19,6 +20,7 @@ export async function recordMemberInterest(member: Member, offer: Offer) {
     db.investOffer.update({ where: { id: offer.id }, data: { clicks: { increment: 1 } } }).catch(() => {});
     const lines = [`<b>${member.name}</b> — ${ROLE[member.role] || member.role}`, `Email: ${member.email}`, `Phone: ${member.phone}`, `Clicked into: <b>${offer.title}</b>`];
     const sponsor = await db.investSponsor.findUnique({ where: { id: offer.sponsorId } }).catch(() => null);
+    pushLeadToKlaviyo({ name: member.name, email: member.email, phone: member.phone, kind: "member-interest", interest: offer.title, source: "member-interest", sponsor: sponsor?.business }).catch(() => {});
     if (sponsor?.email) {
       const html = `<div style="font-family:Arial,sans-serif;color:#14202e"><h2 style="margin:0 0 10px">New lead on &ldquo;${offer.title}&rdquo;</h2>${lines.map((l) => `<p style="margin:4px 0">${l}</p>`).join("")}<p style="color:#8b9a8f;font-size:12px;margin-top:16px">Sign in to your 2X sponsor portal to see and note this lead.</p></div>`;
       sendTo(sponsor.email, `New lead on "${offer.title}" — 2X Investing`, html).catch(() => {});

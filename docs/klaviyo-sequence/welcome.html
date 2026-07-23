@@ -1,0 +1,22 @@
+<!-- Klaviyo Flow 1: WELCOME / OPT-IN. Trigger: metric "2X Interest" where kind = member-signup (or List subscribe). -->
+<div style="margin:0;padding:0;background:#0a0f0c;">
+  <div style="display:none;max-height:0;overflow:hidden;">Your private access to 2X Investing is open.</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0a0f0c;">
+    <tr><td align="center" style="padding:32px 16px;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#0e1512;border:1px solid rgba(201,162,75,.2);border-radius:8px;">
+        <tr><td style="padding:34px 40px 10px;font-family:Georgia,'Times New Roman',serif;">
+          <div style="font-size:26px;color:#ece7da;"><span style="color:#c9a24b;">2X</span> Investing</div>
+          <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8b9a8f;margin-top:4px;">Lifestyle Investing</div>
+        </td></tr>
+        <tr><td style="padding:14px 40px 6px;font-family:Georgia,serif;font-size:30px;line-height:1.15;color:#ece7da;">Welcome, {{ first_name|default:'investor' }}.</td></tr>
+        <tr><td style="padding:8px 40px 0;font-family:Arial,sans-serif;font-size:15px;line-height:1.6;color:#8b9a8f;">
+          Your membership is live — every offering's private documents (decks, PPMs, memoranda) are now unlocked for you. Browse the house, open what draws you, and we'll bring you the matches.
+        </td></tr>
+        <tr><td style="padding:26px 40px 6px;"><a href="https://2xinvesting.com/member" style="display:inline-block;background:#14b8a6;color:#04140f;font-family:Arial,sans-serif;font-size:14px;font-weight:bold;text-decoration:none;padding:14px 26px;border-radius:3px;">Enter the Members Area →</a></td></tr>
+        <tr><td style="padding:26px 40px 30px;font-family:Arial,sans-serif;font-size:12px;color:#5b6b80;border-top:1px solid rgba(236,231,218,.08);margin-top:20px;">
+          2X Investing · Private placements for qualified investors.<br><a href="{% unsubscribe %}" style="color:#8b9a8f;">Unsubscribe</a>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</div>
