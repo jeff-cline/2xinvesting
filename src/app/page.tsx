@@ -148,6 +148,33 @@ export default async function Home() {
           </section>
         )}
 
+        {/* Sponsor Opportunities — partner offtake / exit */}
+        <section className="band" id="sponsor-opportunities">
+          <div className="wrap">
+            <div className="sec-head"><div><span className="eyebrow">In Cooperation · Sponsor Opportunities</span><h2>Off‑Take Agreements &amp; Exit Optimization</h2></div></div>
+            <div className="pockets">
+              <a className="pocket-row fade d1" href="/offtake-agreements">
+                <div className="pocket-cover partner-cover"><img src="/media/naeoa-logo.png" alt="NAEOA" className="partner-logo-img" /></div>
+                <div className="pocket-body">
+                  <span className="member-badge" style={{ background: "var(--teal)" }}>In Cooperation with NAEOA</span>
+                  <h3>Off‑Take Agreements</h3>
+                  <p>The leading offtake marketplace for developers, buyers, and investors — a private ecosystem for structuring and closing North American energy deals.</p>
+                  <span className="btn solid" style={{ alignSelf: "flex-start", marginTop: 6 }}>Explore Off‑Take Agreements →</span>
+                </div>
+              </a>
+              <a className="pocket-row fade d2" href="/exit-optimization">
+                <div className="pocket-cover partner-cover"><div className="eo-wordmark"><span>EXIT</span><span>OPTIMIZATION</span></div></div>
+                <div className="pocket-body">
+                  <span className="member-badge" style={{ background: "var(--teal)" }}>In Cooperation with Exit Optimization</span>
+                  <h3>Exit Optimization</h3>
+                  <p>Double — even triple — your exit valuation. Most owners leave 30–60% of their value on the table; we assemble the team that expands your multiple and gets you paid at the close.</p>
+                  <span className="btn solid" style={{ alignSelf: "flex-start", marginTop: 6 }}>Explore Exit Optimization →</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* Need a Geek ad */}
         <section className="band">
           <div className="wrap">
