@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export default function OpportunityForm({ kind, buttonLabel = "Request Information", roleOptions, detailsLabel, detailsPlaceholder }: {
   kind: "offtake" | "exit-optimization";
@@ -9,6 +10,12 @@ export default function OpportunityForm({ kind, buttonLabel = "Request Informati
   detailsPlaceholder: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  // Lock the page scroll while the modal is open so only the form is in play.
+  useEffect(() => {
+    if (open) { document.body.style.overflow = "hidden"; return () => { document.body.style.overflow = ""; }; }
+  }, [open]);
   const [f, setF] = useState({ name: "", email: "", phone: "", company: "", role: roleOptions[0] || "", details: "" });
   const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
   const set = (k: string, v: string) => setF({ ...f, [k]: v });
@@ -23,7 +30,7 @@ export default function OpportunityForm({ kind, buttonLabel = "Request Informati
   return (
     <>
       <button className="btn solid" onClick={() => setOpen(true)} style={{ padding: "14px 24px" }}>{buttonLabel}</button>
-      {open && (
+      {open && mounted && createPortal(
         <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
           <div className="modal-card">
             <button className="modal-close" onClick={() => setOpen(false)} aria-label="Close">×</button>
@@ -40,7 +47,8 @@ export default function OpportunityForm({ kind, buttonLabel = "Request Informati
               <button className="btn solid" disabled={busy} style={{ width: "100%", justifyContent: "center", padding: 14 }}>{busy ? "Submitting…" : "Submit & Continue"}</button>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

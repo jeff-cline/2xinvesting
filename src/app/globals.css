@@ -233,8 +233,9 @@ footer p.mission{color:var(--muted);font-size:13.5px;max-width:40ch;margin:16px 
 .partner-cover .eo-wordmark span:first-child{font-size:34px}
 
 /* Modal (pop-up forms) */
-.modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(4,8,6,.78);backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
-.modal-card{position:relative;background:var(--ground-2);border:1px solid var(--line);border-radius:8px;padding:34px 34px 30px;width:100%;max-width:460px;box-shadow:0 40px 100px -30px rgba(0,0,0,.9)}
+.modal-overlay{position:fixed;inset:0;z-index:9999;background:#040806;background:radial-gradient(120% 90% at 50% 0%, #0a120d 0%, #040806 60%, #010402 100%);display:flex;align-items:flex-start;justify-content:center;padding:56px 16px;overflow-y:auto}
+.modal-card{position:relative;background:var(--ground-2);border:1px solid var(--line);border-radius:8px;padding:34px 34px 30px;width:100%;max-width:480px;margin:auto;box-shadow:0 40px 120px -20px rgba(0,0,0,.95)}
+@media (max-width:560px){.modal-overlay{padding:0}.modal-card{border-radius:0;min-height:100vh;max-width:none;padding:28px 20px 40px}}
 .modal-close{position:absolute;top:12px;right:14px;background:none;border:0;color:var(--muted);font-size:26px;line-height:1;cursor:pointer;padding:4px}
 .modal-close:hover{color:var(--ivory)}
 
