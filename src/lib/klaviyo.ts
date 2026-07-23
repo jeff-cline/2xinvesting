@@ -13,7 +13,7 @@ export async function getKlaviyoConfig(): Promise<KlaviyoConfig> {
 
 export async function saveKlaviyoConfig(apiKey: string, listId: string, connected: boolean) {
   const value = JSON.stringify({ apiKey, listId, connected });
-  await db.integration.upsert({ where: { key: "klaviyo" }, update: { config: value, connected, status: connected ? "connected" : "saved" }, create: { key: "klaviyo", label: "Klaviyo (2X)", config: value, connected } }).catch(() => {});
+  await db.integration.upsert({ where: { key: "klaviyo" }, update: { config: value }, create: { key: "klaviyo", config: value } }).catch(() => {});
 }
 
 function e164(phone: string): string | undefined {
