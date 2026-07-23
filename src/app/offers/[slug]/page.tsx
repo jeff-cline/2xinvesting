@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Header, Footer } from "@/components/Chrome";
 import { getOffer } from "@/lib/offers";
 import { db } from "@/lib/db";
+import { getSessionMember } from "@/lib/member-auth";
+import { recordMemberInterest } from "@/lib/member-lead";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +14,9 @@ export default async function OfferPage({ params }: { params: Promise<{ slug: st
   if (!offer) notFound();
   // Record an impression (fire-and-forget).
   db.investOffer.update({ where: { slug }, data: { impressions: { increment: 1 } } }).catch(() => {});
+  // Members unlock private docs; a member clicking into a sponsor's opportunity becomes a sponsor lead.
+  const member = await getSessionMember();
+  if (member) recordMemberInterest({ id: member.id, name: member.name, email: member.email, phone: member.phone, role: member.role }, { id: offer.id, slug: offer.slug, title: offer.title, sponsorId: offer.sponsorId });
 
   return (
     <>
@@ -51,11 +56,20 @@ export default async function OfferPage({ params }: { params: Promise<{ slug: st
                 <>
                   <div style={{ height: 1, background: "var(--line-soft)", margin: "22px 0" }} />
                   <div className="text" style={{ fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 12 }}>Documents</div>
-                  <div className="docs" style={{ flexDirection: "column" }}>
-                    {offer.pdfs.map((p) => (
-                      <a className="doc" key={p.label} href={p.url}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M14 3v5h5M7 3h8l5 5v13H7z" /></svg>{p.label}</a>
-                    ))}
-                  </div>
+                  {member ? (
+                    <div className="docs" style={{ flexDirection: "column" }}>
+                      {offer.pdfs.map((p) => (
+                        <a className="doc" key={p.label} href={p.url}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M14 3v5h5M7 3h8l5 5v13H7z" /></svg>{p.label}</a>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="locked-docs">
+                      <div className="locked-list">
+                        {offer.pdfs.map((p) => (<div className="doc locked" key={p.label}><span className="lock">🔒</span>{p.label}</div>))}
+                      </div>
+                      <Link className="btn-teal" href={`/member/login?next=/offers/${offer.slug}`} style={{ width: "100%", justifyContent: "center", marginTop: 12 }}>Become a member to unlock</Link>
+                    </div>
+                  )}
                 </>
               )}
             </aside>

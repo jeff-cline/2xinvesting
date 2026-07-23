@@ -12,7 +12,7 @@ export function Header() {
           <li><Link href="/#offerings">Offerings</Link></li>
           <li><Link href="/offtake-agreements">Off‑Take</Link></li>
           <li><Link href="/exit-optimization">Exit Opt</Link></li>
-          <li><Link href="/invest">For Investors</Link></li>
+          <li><Link href="/member">Members</Link></li>
           <li><Link href="/sponsor">For Sponsors</Link></li>
         </ul>
         <Link className="btn-teal" href="/investor-discovery-tour">★ Free Discovery Tour</Link>
@@ -41,7 +41,8 @@ export function Footer() {
             <Link href="/#featured">Featured</Link>
             <Link href="/offtake-agreements">Off‑Take Agreements</Link>
             <Link href="/exit-optimization">Exit Optimization</Link>
-            <Link href="/invest">For Investors</Link>
+            <Link href="/member">Members Area</Link>
+            <Link href="/member/login">Member Login</Link>
             <Link href="/sponsor">For Sponsors</Link>
             <Link href="/sponsor/login">Sponsor Login</Link>
           </div>

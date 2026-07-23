@@ -48,6 +48,7 @@ model InvestLead {
   kind      String   @default("investor")
   sourcePage String  @default("")
   sponsorNote String @default("")
+  memberId  String?
   createdAt DateTime @default(now())
   @@index([createdAt])
   @@map("invest_lead")
@@ -69,6 +70,17 @@ model InvestSponsor {
   crmConnected Boolean  @default(false)
   createdAt    DateTime @default(now())
   @@map("invest_sponsor")
+}
+
+model InvestMember {
+  id           String   @id @default(cuid())
+  name         String   @default("")
+  email        String   @unique
+  phone        String   @default("")
+  passwordHash String   @default("")
+  role         String   @default("private")
+  createdAt    DateTime @default(now())
+  @@map("invest_member")
 }
 
 model InvestEvent {

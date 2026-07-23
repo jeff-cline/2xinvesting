@@ -5,7 +5,7 @@ export type Offer = {
   id: string; slug: string; title: string; category: string; blurb: string;
   description: string; iconGlyph: string; coverClass: string; featuredImage: string;
   gallery: string[]; pdfs: OfferPdf[]; isSample: boolean; priority: number;
-  trending: boolean; pocket: boolean; impressions: number; clicks: number;
+  trending: boolean; pocket: boolean; sponsorId: string | null; impressions: number; clicks: number;
 };
 
 // The 9 seed offers — real content, flagged isSample so they retire as sponsors arrive.
@@ -55,6 +55,7 @@ function toOffer(r: Record<string, unknown>): Offer {
     coverClass: String(r.coverClass), featuredImage: String(r.featuredImage),
     gallery: safeArr(r.gallery) as string[], pdfs: safeArr(r.pdfs) as OfferPdf[],
     isSample: Boolean(r.isSample), priority: Number(r.priority), trending: Boolean(r.trending), pocket: Boolean(r.pocket),
+    sponsorId: (r.sponsorId as string) ?? null,
     impressions: Number(r.impressions), clicks: Number(r.clicks),
   };
 }
