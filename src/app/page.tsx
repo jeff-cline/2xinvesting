@@ -26,7 +26,7 @@ function OfferCard({ o, trending }: { o: Offer; trending?: boolean }) {
 }
 
 export default async function Home() {
-  const { featured, alsoView, trending, pocket } = await getHomeOffers();
+  const { featured, alsoView, trending, pocket, products } = await getHomeOffers();
   return (
     <>
       <Header />
@@ -144,6 +144,15 @@ export default async function Home() {
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+        )}
+
+        {products.length > 0 && (
+          <section className="band" id="advertisers">
+            <div className="wrap">
+              <div className="sec-head"><div><span className="eyebrow">From Our Advertisers</span><h2>Products for members</h2></div><Link className="more" href="/member">Members see all →</Link></div>
+              <div className="grid six">{products.map((o) => <OfferCard key={o.slug} o={o} />)}</div>
             </div>
           </section>
         )}

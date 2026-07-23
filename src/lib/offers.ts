@@ -5,7 +5,7 @@ export type Offer = {
   id: string; slug: string; title: string; category: string; blurb: string;
   description: string; iconGlyph: string; coverClass: string; featuredImage: string;
   gallery: string[]; pdfs: OfferPdf[]; isSample: boolean; priority: number;
-  trending: boolean; pocket: boolean; sponsorId: string | null; impressions: number; clicks: number;
+  trending: boolean; pocket: boolean; listingType: string; sponsorId: string | null; impressions: number; clicks: number;
 };
 
 
@@ -16,7 +16,7 @@ function toOffer(r: Record<string, unknown>): Offer {
     coverClass: String(r.coverClass), featuredImage: String(r.featuredImage),
     gallery: safeArr(r.gallery) as string[], pdfs: safeArr(r.pdfs) as OfferPdf[],
     isSample: Boolean(r.isSample), priority: Number(r.priority), trending: Boolean(r.trending), pocket: Boolean(r.pocket),
-    sponsorId: (r.sponsorId as string) ?? null,
+    listingType: String(r.listingType || "opportunity"), sponsorId: (r.sponsorId as string) ?? null,
     impressions: Number(r.impressions), clicks: Number(r.clicks),
   };
 }
@@ -34,17 +34,19 @@ function rank(a: Offer, b: Offer) {
 export async function getHomeOffers() {
   const rows = await db.investOffer.findMany({ where: { status: "live" } }).catch(() => []);
   const all = rows.map(toOffer).sort(rank);
-  const pocket = all.filter((o) => o.pocket).sort((a, b) => b.priority - a.priority);
+  const products = all.filter((o) => o.listingType === "product");           // advertiser products
+  const opps = all.filter((o) => o.listingType !== "product");               // sponsor opportunities
+  const pocket = opps.filter((o) => o.pocket).sort((a, b) => b.priority - a.priority);
   // Trending = offers flagged trending (God-controlled); they don't appear in featured/also-view.
-  const trending = all.filter((o) => o.trending && !o.pocket).slice(0, 6);
-  const pool = all.filter((o) => !o.trending && !o.pocket);
-  if (!pool.length) return { featured: null, alsoView: [], trending, pocket, all };
+  const trending = opps.filter((o) => o.trending && !o.pocket).slice(0, 6);
+  const pool = opps.filter((o) => !o.trending && !o.pocket);
+  if (!pool.length) return { featured: null, alsoView: [], trending, pocket, products, all };
   const cycle = Math.floor(Date.now() / (3 * 86400_000));
   const topPool = pool.slice(0, Math.min(4, pool.length));
   const featured = topPool[cycle % topPool.length];
   const rest = pool.filter((o) => o.slug !== featured.slug);
   const alsoView = rest.slice(0, 6);
-  return { featured, alsoView, trending, pocket, all };
+  return { featured, alsoView, trending, pocket, products, all };
 }
 
 export async function getOffer(slug: string): Promise<Offer | null> {

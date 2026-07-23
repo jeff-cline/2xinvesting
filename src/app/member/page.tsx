@@ -22,8 +22,9 @@ export default async function MemberPortal() {
   const m = await getSessionMember();
   if (!m) redirect("/member/login?next=/member");
   const { all } = await getHomeOffers();
-  const opportunities = all.filter((o) => !o.pocket);
-  const pocket = all.filter((o) => o.pocket);
+  const opportunities = all.filter((o) => !o.pocket && o.listingType !== "product");
+  const pocket = all.filter((o) => o.pocket && o.listingType !== "product");
+  const products = all.filter((o) => o.listingType === "product");
 
   return (
     <>
@@ -34,6 +35,7 @@ export default async function MemberPortal() {
             <div className="ml-hi">Welcome,<br /><b>{(m.name || "Member").split(" ")[0]}</b></div>
             <nav>
               <a className="ml-nav-item active" href="#offerings">All Offerings</a>
+              <a className="ml-nav-item" href="#products">Advertiser Products</a>
               <a className="ml-nav-item" href="#pocket">Pocket Offerings</a>
               <Link className="ml-nav-item" href="/offtake-agreements">Off‑Take Agreements</Link>
               <Link className="ml-nav-item" href="/exit-optimization">Exit Optimization</Link>
@@ -49,6 +51,11 @@ export default async function MemberPortal() {
 
             <div id="offerings" className="crm-head"><span className="pill inv">Sponsor Opportunities</span><span className="crm-sub">{opportunities.length} live</span></div>
             <div className="grid six" style={{ marginBottom: 44 }}>{opportunities.map((o) => <Card key={o.slug} o={o} />)}</div>
+
+            {products.length > 0 && (<>
+              <div id="products" className="crm-head"><span className="pill spo">Advertiser Products</span><span className="crm-sub">{products.length} available</span></div>
+              <div className="grid six" style={{ marginBottom: 44 }}>{products.map((o) => <Card key={o.slug} o={o} />)}</div>
+            </>)}
 
             {pocket.length > 0 && (<>
               <div id="pocket" className="crm-head"><span className="pill spo" style={{ background: "rgba(20,184,166,.18)", color: "var(--teal-soft)", borderColor: "rgba(20,184,166,.4)" }}>Pocket Offerings</span><span className="crm-sub">Member benefits</span></div>

@@ -26,6 +26,7 @@ model InvestOffer {
   priority      Int      @default(0)
   trending      Boolean  @default(false)
   pocket        Boolean  @default(false)
+  listingType   String   @default("opportunity")
   impressions   Int      @default(0)
   clicks        Int      @default(0)
   status        String   @default("live")

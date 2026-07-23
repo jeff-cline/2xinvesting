@@ -10,10 +10,10 @@ export function Header() {
         </Link>
         <ul>
           <li><Link href="/#offerings">Offerings</Link></li>
+          <li><Link href="/#advertisers">Products</Link></li>
           <li><Link href="/offtake-agreements">Off‑Take</Link></li>
           <li><Link href="/exit-optimization">Exit Opt</Link></li>
           <li><Link href="/member">Members</Link></li>
-          <li><Link href="/sponsor">For Sponsors</Link></li>
         </ul>
         <Link className="btn-teal" href="/investor-discovery-tour">★ Free Discovery Tour</Link>
       </div>
@@ -39,6 +39,7 @@ export function Footer() {
             <h5>Explore</h5>
             <Link href="/#offerings">All Offerings</Link>
             <Link href="/#featured">Featured</Link>
+            <Link href="/#advertisers">Advertiser Products</Link>
             <Link href="/offtake-agreements">Off‑Take Agreements</Link>
             <Link href="/exit-optimization">Exit Optimization</Link>
             <Link href="/member">Members Area</Link>
