@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 export default function KlaviyoPanel() {
   const [hasKey, setHasKey] = useState(false); const [listId, setListId] = useState(""); const [connected, setConnected] = useState(false);
   const [apiKey, setApiKey] = useState(""); const [msg, setMsg] = useState(""); const [busy, setBusy] = useState(false);
-  useEffect(() => { fetch("/api/admin/klaviyo").then((x) => x.json()).then((r) => { if (r?.ok) { setHasKey(r.hasKey); setListId(r.listId || ""); setConnected(r.connected); } }).catch(() => {}); }, []);
+  useEffect(() => { fetch("/api/admin/cc?section=klaviyo").then((x) => x.json()).then((r) => { if (r?.ok) { setHasKey(r.hasKey); setListId(r.listId || ""); setConnected(r.connected); } }).catch(() => {}); }, []);
   async function save() {
     setBusy(true); setMsg("Testing…");
-    const r = await fetch("/api/admin/klaviyo", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ apiKey, listId }) }).then((x) => x.json()).catch(() => null);
+    const r = await fetch("/api/admin/cc", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ section: "klaviyo", apiKey, listId }) }).then((x) => x.json()).catch(() => null);
     setBusy(false);
     if (r?.ok && r.connected) { setConnected(true); setHasKey(true); setApiKey(""); setMsg("Connected ✓"); }
     else setMsg(r?.error || "Could not connect.");

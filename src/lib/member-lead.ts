@@ -28,3 +28,18 @@ export async function recordMemberInterest(member: Member, offer: Offer) {
     notifyFounder(`Member lead → sponsor: ${offer.title}`, lines).catch(() => {});
   } catch { /* never block the page render */ }
 }
+
+// A member downloading a document → a "download lead" in the owner's CRM + email + Klaviyo. Deduped per member+offer+doc.
+export async function recordMemberDownload(member: Member, offer: Offer, docLabel: string) {
+  try {
+    if (!offer.sponsorId) return;
+    const dup = await db.investLead.findFirst({ where: { memberId: member.id, offerId: offer.id, kind: "download", sponsorNote: docLabel } });
+    if (dup) return;
+    await db.investLead.create({ data: { name: member.name, email: member.email, phone: member.phone, role: member.role, kind: "download", offerId: offer.id, memberId: member.id, interests: JSON.stringify([`Downloaded: ${docLabel} — ${offer.title}`]), sponsorNote: docLabel, sourcePage: `/offers/${offer.slug}`, source: "download" } });
+    const owner = await db.investSponsor.findUnique({ where: { id: offer.sponsorId } }).catch(() => null);
+    const lines = [`<b>${member.name}</b>`, `Email: ${member.email}`, `Phone: ${member.phone}`, `Downloaded: <b>${docLabel}</b> on <b>${offer.title}</b>`];
+    if (owner?.email) sendTo(owner.email, `Download lead: ${docLabel} — ${offer.title}`, `<div style="font-family:Arial,sans-serif;color:#14202e"><h2>New download lead</h2>${lines.map((l) => `<p style="margin:4px 0">${l}</p>`).join("")}</div>`).catch(() => {});
+    notifyFounder(`Download lead → ${offer.title} (${docLabel})`, lines).catch(() => {});
+    pushLeadToKlaviyo({ name: member.name, email: member.email, phone: member.phone, kind: "download", interest: `${docLabel} — ${offer.title}`, source: "download", sponsor: owner?.business }).catch(() => {});
+  } catch { /* never block */ }
+}

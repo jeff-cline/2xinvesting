@@ -1,22 +1,32 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Header, Footer } from "@/components/Chrome";
 import { getOffer } from "@/lib/offers";
 import { db } from "@/lib/db";
 import { getSessionMember } from "@/lib/member-auth";
-import { recordMemberInterest } from "@/lib/member-lead";
+import { recordMemberInterest, recordMemberDownload } from "@/lib/member-lead";
 
 export const dynamic = "force-dynamic";
 
-export default async function OfferPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function OfferPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ dl?: string }> }) {
   const { slug } = await params;
+  const { dl } = await searchParams;
   const offer = await getOffer(slug);
   if (!offer) notFound();
   // Record an impression (fire-and-forget).
   db.investOffer.update({ where: { slug }, data: { impressions: { increment: 1 } } }).catch(() => {});
   // Members unlock private docs; a member clicking into a sponsor's opportunity becomes a sponsor lead.
   const member = await getSessionMember();
-  if (member) recordMemberInterest({ id: member.id, name: member.name, email: member.email, phone: member.phone, role: member.role }, { id: offer.id, slug: offer.slug, title: offer.title, sponsorId: offer.sponsorId });
+  const ownerRef = { id: offer.id, slug: offer.slug, title: offer.title, sponsorId: offer.sponsorId };
+  if (member) recordMemberInterest({ id: member.id, name: member.name, email: member.email, phone: member.phone, role: member.role }, ownerRef);
+  // A member downloading a document → download lead + (if a real file) redirect to it.
+  if (member && dl) {
+    await recordMemberDownload({ id: member.id, name: member.name, email: member.email, phone: member.phone, role: member.role }, ownerRef, dl);
+    const doc = offer.pdfs.find((p) => p.label === dl);
+    if (doc && doc.url && doc.url !== "#") redirect(doc.url);
+  }
+  // Guests hitting a doc link are sent to join.
+  if (!member && dl) redirect(`/member/login?next=/offers/${slug}`);
 
   return (
     <>
@@ -59,7 +69,7 @@ export default async function OfferPage({ params }: { params: Promise<{ slug: st
                   {member ? (
                     <div className="docs" style={{ flexDirection: "column" }}>
                       {offer.pdfs.map((p) => (
-                        <a className="doc" key={p.label} href={`/api/download?offer=${offer.slug}&doc=${encodeURIComponent(p.label)}`}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M14 3v5h5M7 3h8l5 5v13H7z" /></svg>{p.label}</a>
+                        <a className="doc" key={p.label} href={`/offers/${offer.slug}?dl=${encodeURIComponent(p.label)}`}><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth={1.6}><path d="M14 3v5h5M7 3h8l5 5v13H7z" /></svg>{p.label}</a>
                       ))}
                     </div>
                   ) : (
